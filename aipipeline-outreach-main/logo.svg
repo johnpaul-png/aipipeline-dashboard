@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <!-- Black background -->
+    <radialGradient id="bgGlow" cx="50%" cy="55%" r="45%">
+      <stop offset="0%" stop-color="#0a1628" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#000000" stop-opacity="1"/>
+    </radialGradient>
+
+    <!-- Blue horizon glow -->
+    <radialGradient id="horizonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a6fff" stop-opacity="0.95"/>
+      <stop offset="40%" stop-color="#0055dd" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#0022aa" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Bright center flare -->
+    <radialGradient id="flareGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="1"/>
+      <stop offset="30%" stop-color="#88ccff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#0044cc" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- A letter glow -->
+    <filter id="letterGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Strong glow filter for lines -->
+    <filter id="lineGlow" x="-50%" y="-200%" width="200%" height="500%">
+      <feGaussianBlur stdDeviation="4" result="blur1"/>
+      <feGaussianBlur stdDeviation="8" result="blur2"/>
+      <feMerge>
+        <feMergeNode in="blur2"/>
+        <feMergeNode in="blur1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Horizon arc filter -->
+    <filter id="horizonFilter" x="-10%" y="-100%" width="120%" height="300%">
+      <feGaussianBlur stdDeviation="18" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="url(#bgGlow)"/>
+  <rect width="1080" height="1080" fill="#000000"/>
+
+  <!-- Horizon glow arc -->
+  <ellipse cx="540" cy="530" rx="480" ry="60" fill="url(#horizonGlow)" filter="url(#horizonFilter)" opacity="0.85"/>
+
+  <!-- Secondary wider glow -->
+  <ellipse cx="540" cy="535" rx="380" ry="35" fill="#1155ee" opacity="0.5" filter="url(#horizonFilter)"/>
+
+  <!-- Center flare -->
+  <ellipse cx="540" cy="518" rx="90" ry="22" fill="url(#flareGlow)" filter="url(#horizonFilter)" opacity="0.95"/>
+
+  <!-- ===== A LETTER ===== -->
+  <!-- Outer A shape (outline style) -->
+  <g filter="url(#letterGlow)">
+    <!-- A outer path: triangle outline with inner notch -->
+    <path d="
+      M 248 560
+      L 390 240
+      L 532 560
+      L 490 560
+      L 450 465
+      L 330 465
+      L 290 560
+      Z
+    " fill="none" stroke="white" stroke-width="28" stroke-linejoin="round" stroke-linecap="round"/>
+
+    <!-- Inner A cutout (the small inner triangle notch at bottom of A) -->
+    <path d="
+      M 390 310
+      L 435 435
+      L 345 435
+      Z
+    " fill="black"/>
+
+    <!-- Inner mini triangle outline for the AP logo style mark -->
+    <path d="
+      M 390 355
+      L 416 420
+      L 364 420
+      Z
+    " fill="none" stroke="white" stroke-width="14" stroke-linejoin="round"/>
+  </g>
+
+  <!-- ===== P LETTER ===== -->
+  <g filter="url(#letterGlow)">
+    <!-- P body -->
+    <rect x="540" y="240" width="44" height="320" rx="6" fill="white"/>
+    <!-- P bump top -->
+    <path d="
+      M 584 240
+      L 684 240
+      Q 760 240 760 320
+      Q 760 400 684 400
+      L 584 400
+      Z
+    " fill="white"/>
+    <!-- P cutout inner -->
+    <path d="
+      M 591 272
+      L 672 272
+      Q 720 272 720 320
+      Q 720 368 672 368
+      L 591 368
+      Z
+    " fill="black"/>
+  </g>
+
+  <!-- ===== CUSTOM AI AUTOMATION text ===== -->
+  <text
+    x="540"
+    y="650"
+    font-family="'Rajdhani', 'Bebas Neue', 'Arial Narrow', sans-serif"
+    font-size="72"
+    font-weight="700"
+    fill="white"
+    text-anchor="middle"
+    letter-spacing="10"
+  >CUSTOM AI AUTOMATION</text>
+
+  <!-- ===== FOR OIL AND GAS with BOLD visible lines ===== -->
+  <!-- Left line - THICK and BRIGHT -->
+  <line x1="160" y1="706" x2="340" y2="706" stroke="#2277ff" stroke-width="4" filter="url(#lineGlow)"/>
+  <line x1="160" y1="706" x2="340" y2="706" stroke="#55aaff" stroke-width="2"/>
+
+  <!-- Right line - THICK and BRIGHT -->
+  <line x1="740" y1="706" x2="920" y2="706" stroke="#2277ff" stroke-width="4" filter="url(#lineGlow)"/>
+  <line x1="740" y1="706" x2="920" y2="706" stroke="#55aaff" stroke-width="2"/>
+
+  <!-- FOR OIL AND GAS text - BOLD -->
+  <text
+    x="540"
+    y="716"
+    font-family="'Rajdhani', 'Bebas Neue', 'Arial Narrow', sans-serif"
+    font-size="32"
+    font-weight="900"
+    fill="white"
+    text-anchor="middle"
+    letter-spacing="8"
+  >FOR OIL AND GAS</text>
+
+</svg>
