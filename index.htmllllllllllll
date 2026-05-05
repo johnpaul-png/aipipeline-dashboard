@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>TDS Peptide Research</title>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="TDS Peptide Research">
+  <meta property="og:description" content="Advanced Reconstitution & Research Protocols.">
+  <meta property="og:image" content="https://tds-research.vercel.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:url" content="https://tds-research.vercel.app">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://tds-research.vercel.app/og-image.png">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { background: #0D0D0D; color: #F0F0F0; font-family: 'Barlow Condensed', sans-serif; -webkit-font-smoothing: antialiased; }
+    button, input, textarea, select { font-family: inherit; cursor: pointer; -webkit-appearance: none; }
+    textarea { resize: vertical; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #333; border-radius: 2px; }
+
+    #hdr { background: #111; border-bottom: 1px solid #1e1e1e; position: sticky; top: 0; z-index: 100; }
+    .hdr-inner { max-width: 1000px; margin: 0 auto; padding: 0 14px; }
+    .hdr-top { display: flex; align-items: center; justify-content: space-between; min-height: 50px; padding: 8px 0; gap: 10px; }
+    .hdr-logo-title { font-size: clamp(13px, 4vw, 18px); font-weight: 700; letter-spacing: clamp(1px, 1vw, 3px); line-height: 1; }
+    .hdr-logo-sub { font-size: clamp(9px, 2.5vw, 11px); letter-spacing: 1px; color: #888; margin-top: 3px; }
+
+    .nav-bar { display: flex; overflow-x: auto; overflow-y: hidden; border-top: 1px solid #1a1a1a; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .nav-bar::-webkit-scrollbar { display: none; }
+    .nav-btn { background: none; border: none; border-right: 1px solid #1e1e1e; color: #777; font-size: clamp(10px, 2.8vw, 12px); letter-spacing: 1px; white-space: nowrap; padding: 7px 12px; flex-shrink: 0; }
+    .nav-btn:active { color: #E02020; background: rgba(224,32,32,.06); }
+
+    .search-wrap { background: #0D0D0D; }
+    .search-input { width: 100%; background: #1C1C1C; border: 1px solid #2A2A2A; border-radius: 6px; color: #F0F0F0; padding: 12px 14px 12px 40px; font-size: clamp(13px, 3vw, 15px); outline: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: 14px center; }
+    .search-input:focus { border-color: #444; }
+    .search-input::placeholder { color: #555; }
+
+    .content { max-width: 1000px; margin: 0 auto; padding: 24px 14px 60px; }
+    .section { margin-bottom: 44px; }
+    .section-hdr { display: flex; align-items: center; margin-bottom: 18px; }
+    .section-bar { width: 3px; height: 24px; background: #E02020; border-radius: 2px; margin-right: 10px; flex-shrink: 0; }
+    .section-title { font-size: clamp(13px, 3.5vw, 16px); font-weight: 700; letter-spacing: clamp(1px, 0.8vw, 3px); }
+    .section-line { height: 1px; background: linear-gradient(to right, #E02020, transparent); margin-top: 7px; }
+
+    .cards-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 560px) { .cards-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 900px) { .cards-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .card { background: #1C1C1C; border: 1px solid #2A2A2A; border-radius: 8px; padding: 14px; position: relative; }
+    .card-name { color: #E02020; font-weight: 700; font-size: clamp(15px, 3.5vw, 17px); margin-bottom: 6px; line-height: 1.3; }
+    .card-desc { color: #CCCCCC; font-size: clamp(13px, 3vw, 14px); line-height: 1.6; margin-bottom: 12px; }
+    .card-divider { border-top: 1px solid #3A0000; padding-top: 10px; margin-bottom: 8px; }
+    .card-label { color: #C41A1A; font-size: clamp(9px, 2.5vw, 10px); font-weight: 700; letter-spacing: 1.5px; margin-bottom: 5px; text-transform: uppercase; }
+    .card-recon { color: #F0F0F0; font-size: clamp(13px, 3vw, 14px); line-height: 1.6; }
+    .card-dose-wrap { margin-top: 9px; }
+    .card-dose { color: #CCCCCC; font-size: clamp(13px, 3vw, 14px); line-height: 1.6; }
+
+    .delete-btn { display: none; position: absolute; top: 10px; right: 10px; background: none; border: 1px solid #3a0000; border-radius: 4px; color: #C41A1A; font-size: 9px; padding: 2px 7px; letter-spacing: 1px; }
+    body.admin-mode .delete-btn { display: block; }
+    body.admin-mode .card-name { padding-right: 72px; }
+
+    .admin-badge { background: #1a3a1a; border: 1px solid #2a5a2a; border-radius: 4px; padding: 5px 10px; font-size: clamp(10px, 2.5vw, 12px); color: #5cca5c; letter-spacing: 1px; white-space: nowrap; }
+    .btn-add { background: #E02020; border: none; border-radius: 4px; color: #fff; font-size: clamp(10px, 2.5vw, 12px); padding: 6px 14px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; }
+    .btn-signout { background: none; border: 1px solid #333; border-radius: 4px; color: #666; font-size: clamp(10px, 2.5vw, 12px); padding: 6px 12px; letter-spacing: 1px; }
+    .btn-admin { background: none; border: 1px solid #444; border-radius: 4px; color: #aaa; font-size: clamp(10px, 2.5vw, 12px); padding: 6px 16px; letter-spacing: 2px; font-weight: 700; white-space: nowrap; }
+
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,.92); display: flex; align-items: center; justify-content: center; z-index: 999; padding: 16px; }
+    .modal { background: #1C1C1C; border: 1px solid #2A2A2A; border-radius: 10px; padding: 28px 24px; width: 100%; max-width: 340px; }
+    .modal-add { max-width: 440px; max-height: calc(100vh - 32px); overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .modal-title { font-size: 13px; font-weight: 700; letter-spacing: 2px; color: #F0F0F0; margin-bottom: 5px; }
+    .modal-sub { font-size: 10px; color: #555; margin-bottom: 20px; letter-spacing: 1px; }
+    .field-label { font-size: 9px; color: #C41A1A; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 5px; }
+    .field-wrap { margin-bottom: 14px; }
+    .field-input { width: 100%; background: #242424; border: 1px solid #383838; border-radius: 4px; color: #F0F0F0; padding: 10px; font-size: 16px; }
+    .field-input:focus { outline: none; border-color: #555; }
+    .field-textarea { width: 100%; background: #242424; border: 1px solid #383838; border-radius: 4px; color: #F0F0F0; padding: 10px; font-size: 16px; resize: vertical; }
+    .field-textarea:focus { outline: none; border-color: #555; }
+    .field-select { width: 100%; background: #242424; border: 1px solid #383838; border-radius: 4px; color: #F0F0F0; padding: 10px; font-size: 16px; }
+    .btn-row { display: flex; gap: 8px; margin-top: 20px; }
+    .btn-primary { flex: 1; background: #E02020; border: none; border-radius: 4px; color: #fff; font-size: 13px; font-weight: 700; padding: 12px; letter-spacing: 1px; }
+    .btn-secondary { flex: 1; background: none; border: 1px solid #383838; border-radius: 4px; color: #555; font-size: 13px; padding: 12px; letter-spacing: 1px; }
+    .pass-error { color: #E02020; font-size: 9px; margin-top: 6px; letter-spacing: 1px; display: none; }
+    .pass-input-error { border-color: #E02020 !important; }
+    .footer { text-align: center; color: #2a2a2a; font-size: clamp(7px, 1.8vw, 8px); letter-spacing: 2px; margin-top: 32px; padding-bottom: 20px; }
+
+    /* Loading spinner */
+    #loading { display: flex; align-items: center; justify-content: center; height: 200px; color: #444; font-size: 13px; letter-spacing: 2px; }
+    .spinner { width: 20px; height: 20px; border: 2px solid #333; border-top-color: #E02020; border-radius: 50%; animation: spin .8s linear infinite; margin-right: 12px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+</head>
+<body>
+
+<div id="hdr">
+  <div class="hdr-inner">
+    <div class="hdr-top">
+      <div style="flex:1;min-width:0">
+        <div class="hdr-logo-title">TDS PEPTIDE RESEARCH</div>
+        <div class="hdr-logo-sub">FOR RESEARCH PURPOSES ONLY · NOT FOR HUMAN CONSUMPTION</div>
+      </div>
+      <div id="admin-bar" style="display:flex;gap:6px;align-items:center;flex-shrink:0">
+        <button class="btn-admin" onclick="openPassModal()">ADMIN</button>
+      </div>
+    </div>
+    <div class="nav-bar" id="nav-bar"></div>
+  </div>
+</div>
+
+<div class="search-wrap" style="max-width:1000px;margin:0 auto;padding:16px 14px 0;">
+  <input class="search-input" id="search-input" type="text" placeholder="Search peptides..." oninput="handleSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false">
+</div>
+
+<div class="content" id="content">
+  <div id="loading"><div class="spinner"></div>LOADING...</div>
+</div>
+
+<!-- Password Modal -->
+<div class="overlay" id="pass-modal" style="display:none" onclick="if(event.target===this)closePassModal()">
+  <div class="modal">
+    <div class="modal-title">ADMIN ACCESS</div>
+    <div class="modal-sub">Enter your admin password to continue.</div>
+    <input class="field-input" id="pass-input" type="password" placeholder="Password" oninput="clearPassError()" onkeydown="if(event.key==='Enter')submitPass()">
+    <div class="pass-error" id="pass-error">INCORRECT PASSWORD</div>
+    <div class="btn-row">
+      <button class="btn-primary" onclick="submitPass()">ENTER</button>
+      <button class="btn-secondary" onclick="closePassModal()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Peptide Modal -->
+<div class="overlay" id="add-modal" style="display:none" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal modal-add">
+    <div class="modal-title">ADD NEW PEPTIDE</div>
+    <div class="modal-sub">Fill in all fields below</div>
+    <div class="field-wrap">
+      <div class="field-label">SECTION</div>
+      <select class="field-select" id="af-sec"></select>
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">NAME</div>
+      <input class="field-input" id="af-name" type="text" placeholder="e.g. BPC-157 5mg">
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">DESCRIPTION</div>
+      <textarea class="field-textarea" id="af-desc" placeholder="Brief description..." rows="3"></textarea>
+    </div>
+    <div class="field-wrap">
+      <div class="field-label">RECONSTITUTION</div>
+      <textarea class="field-textarea" id="af-recon" placeholder="Reconstitution instructions..." rows="2"></textarea>
+    </div>
+    <div class="field-wrap" style="margin-bottom:22px">
+      <div class="field-label">DOSING</div>
+      <textarea class="field-textarea" id="af-dose" placeholder="Dosing instructions..." rows="2"></textarea>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn-primary" onclick="submitAdd()">ADD PEPTIDE</button>
+      <button class="btn-secondary" onclick="closeAddModal()">CANCEL</button>
+    </div>
+  </div>
+</div>
+
+<!-- Firebase loaded in <head> -->
+
+<script>
+// ── Firebase config ──────────────────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyC-xxWe8Dp77kWgfC5cpgJde1KfButnYF0",
+  authDomain: "tds-research.firebaseapp.com",
+  databaseURL: "https://tds-research-default-rtdb.firebaseio.com",
+  projectId: "tds-research",
+  storageBucket: "tds-research.firebasestorage.app",
+  messagingSenderId: "160150925016",
+  appId: "1:160150925016:web:8ee8558bca6d32694631ad"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+// ── Admin password ───────────────────────────────────────────────────────────
+const PASS = "TDS2026";
+let isAdmin = false;
+
+// ── Default seed data ────────────────────────────────────────────────────────
+const DEFAULT_SECTIONS = [
+  {id:"s1",title:"INJURY RECOVERY & TISSUE REPAIR",peptides:[
+    {id:"p1",name:"BPC-157 5mg",desc:"Accelerates healing of tendons, ligaments, muscles, and gut tissue.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Men loading: 20 units daily = 500mcg. Men regular: 10 units daily = 250mcg. Women loading: 15 units daily = 375mcg. Women regular: 10 units daily = 250mcg."},
+    {id:"p2",name:"BPC-157 10mg",desc:"Accelerates healing of tendons, ligaments, muscles, and gut tissue.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Men loading: 10 units daily = 500mcg. Men regular: 5 units daily = 250mcg. Women loading: 7.5 units daily = 375mcg. Women regular: 5 units daily = 250mcg."},
+    {id:"p3",name:"TB-500 5mg",desc:"Thymosin Beta-4; promotes tissue repair, reduces inflammation, and supports muscle recovery.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Both genders: 10-15 units daily = 250-375mcg."},
+    {id:"p4",name:"TB-500 10mg",desc:"Thymosin Beta-4; promotes tissue repair, reduces inflammation, and supports muscle recovery.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Both genders: 7.5-10 units daily = 250-333mcg."},
+    {id:"p5",name:"Wolverine 10mg (BPC-157 5mg + TB-500 5mg)",desc:"Combined recovery stack for enhanced healing synergy between both peptides.",recon:"Add 2mls of bacteriostatic or sterile water.",dose:"Both genders: 10 units daily = 250mcg of each compound. Both genders: 15 units daily = 375mcg of each compound."},
+    {id:"p6",name:"Klow 80mg",desc:"Blend targeting inflammation reduction and systemic tissue regeneration.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Both genders: 7.5 units daily = 250mcg BPC, KPV & TB-500 each + 1.25mg GHK."},
+    {id:"p7",name:"Glow 70mg",desc:"Multi-peptide blend supporting skin health and full-body repair.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg of BPC/TB and 1.25-1.6mg GHK."},
+    {id:"p8",name:"Rejuvenate Blend 70mg (BPC / KPV / GHK)",desc:"Triple blend targeting gut healing, anti-inflammation, and cellular regeneration.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg of KPV/BPC and 1.25-1.6mg GHK."},
+    {id:"p9",name:"KPV 10mg",desc:"Anti-inflammatory tripeptide supporting gut health and wound healing.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg."},
+    {id:"p10",name:"Ara-290 10mg",desc:"Targets nerve repair and chronic pain; modulates inflammatory response pathways.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg."},
+  ]},
+  {id:"s2",title:"FAT OXIDATION & METABOLISM",peptides:[
+    {id:"p11",name:"Retatrutide 10mg",desc:"Triple receptor agonist (GIP/GLP-1/glucagon) promoting significant fat loss and metabolic regulation.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Men: 10 units twice weekly = 500mcg per dose. Women: 5 units twice weekly = 250mcg per dose."},
+    {id:"p12",name:"Burnitol 10mg (Retatrutide 5mg + Cagrilintide 5mg)",desc:"Quintuple receptor agonist targeting GIP, GLP-1, glucagon, amylin, and calcitonin pathways for comprehensive fat loss.",recon:"Add 2ml of sterile water.",dose:"Take 10 units twice weekly = 500mcg Retatrutide + 500mcg Cagrilintide weekly."},
+    {id:"p13",name:"Mando-Lean 15mg (AOD-9604 5mg + Mots-c 5mg + Tesamorelin 5mg)",desc:"Triple metabolism blend targeting fat breakdown, mitochondrial function, and visceral fat.",recon:"Add 3ml of sterile water. Does NOT react well to BAC water.",dose:"Take 15 units daily = 250mcg of each compound."},
+    {id:"p14",name:"5-Amino-1MQ 5mg",desc:"Blocks NNMT enzyme to boost NAD+ levels and activate fat cell metabolism.",recon:"Add 2mls of bacteriostatic or sterile water.",dose:"Both genders: 10 units daily = 250mcg."},
+    {id:"p15",name:"5-Amino-1MQ 50mg",desc:"Blocks NNMT enzyme to boost NAD+ levels and activate fat cell metabolism.",recon:"Add 5ml of bacteriostatic or sterile water.",dose:"Both genders: 2.5-3 units daily = 250-300mcg."},
+    {id:"p16",name:"5-Amino-1MQ 50mg Small",desc:"Blocks NNMT enzyme to boost NAD+ levels and activate fat cell metabolism.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 3 units daily = 500mcg."},
+    {id:"p17",name:"AOD-9604 5mg",desc:"Growth hormone fragment that stimulates fat breakdown without affecting blood sugar.",recon:"Add 0.5ml DMSO directly to vial, stir gently until clear. Add 1.5ML water to the vial. Stir gently.",dose:"Both genders: 10-15 units daily = 250-375mcg."},
+    {id:"p18",name:"SLU-PP-332 5mg",desc:"ERR agonist that mimics the metabolic benefits of exercise at a cellular level.",recon:"Add 0.5ml DMSO directly to vial, stir gently until clear. Add 1.5ml water to the vial. Stir gently.",dose:"Both genders: 10-15 units daily = 250-375mcg."},
+    {id:"p19",name:"Cardarine 300mg",desc:"PPARdelta agonist that enhances fat burning capacity and endurance.",recon:"Contact TDS for reconstitution protocol.",dose:"Contact TDS for dosing guidance."},
+    {id:"p20",name:"Master Shredder 553mg/ml 10ml",desc:"Fat oxidation amino acid blend in liquid form for comprehensive metabolic support.",recon:"Pre-mixed liquid — no reconstitution required.",dose:"Contact TDS for dosing guidance. 0.5ml pre workout."},
+  ]},
+  {id:"s3",title:"CELLULAR ENERGY & DETOX",peptides:[
+    {id:"p21",name:"MOTS-C 10mg",desc:"Mitochondrial-derived peptide that regulates metabolism and improves insulin sensitivity.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Both male and female: 10 units daily = 333mcg."},
+    {id:"p22",name:"SS-31 10mg",desc:"Targets mitochondrial membranes to reduce oxidative stress and improve cellular energy output.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 10-15 units daily = 333-500mcg."},
+    {id:"p23",name:"NAD+ 500mg",desc:"Essential coenzyme involved in cellular energy production, DNA repair, and anti-aging pathways.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 15 units daily = 25mg. OR Take 60 units twice weekly = 200mg."},
+    {id:"p24",name:"NAD+ 1000mg",desc:"Essential coenzyme involved in cellular energy production, DNA repair, and anti-aging pathways.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5 units daily = 25mg. OR Take 30 units twice weekly = 200mg."},
+    {id:"p25",name:"Glutathione 1500mg",desc:"Master antioxidant supporting detoxification, immune function, and skin brightening.",recon:"Add 3mls of bacteriostatic or sterile water.",dose:"Take 20 units, 3 times weekly = 100mg per dose."},
+    {id:"p26",name:"Dickskin 865mg/ml 10ml · Extreme Vasodilator",desc:"Powerful injectable vasodilator stack engineered for maximum circulation enhancement and superior vascular performance.",recon:"Pre-mixed liquid — no reconstitution required.",dose:"Contact TDS for dosing guidance. 0.5ml pre workout."},
+  ]},
+  {id:"s4",title:"HAIR & SKIN REGENERATION",peptides:[
+    {id:"p27",name:"GHK-Cu 50mg",desc:"Copper peptide that stimulates collagen, promotes wound healing, and supports hair follicle regeneration.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Both genders: 10 units daily or before bed = 1.7mg per 10 units."},
+    {id:"p28",name:"GHK-Cu 100mg",desc:"Copper peptide that stimulates collagen, promotes wound healing, and supports hair follicle regeneration.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Both genders: 5 units daily or before bed = 1.7mg per 10 units."},
+    {id:"p29",name:"AHK-Cu 50mg",desc:"Copper peptide with focused action on hair growth stimulation and scalp health.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 10-15 units daily = 1.7mg to 2.5mg daily."},
+    {id:"p30",name:"AHK-Cu 100mg",desc:"Copper peptide with focused action on hair growth stimulation and scalp health.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 5 to 7.5 units daily = 1.7 to 2.5mg daily."},
+    {id:"p31",name:"Snap-8 10mg (Argireline)",desc:"Reduces muscle micro-contractions in facial tissue; topical wrinkle-reducer.",recon:"Add 3ml of sterile water.",dose:"Take 10-15 units nightly = 333-500mcg."},
+    {id:"p32",name:"Matrixyl 10mg",desc:"Stimulates collagen and elastin synthesis; a leading anti-aging and skin repair peptide.",recon:"Add 3ml of sterile water.",dose:"Take 10-15 units nightly = 333-500mcg."},
+  ]},
+  {id:"s5",title:"GROWTH HORMONE OPTIMIZATION",peptides:[
+    {id:"p33",name:"CJC-1295 + DAC 5mg",desc:"Long-acting GHRH analog providing sustained, continuous growth hormone release.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 10-15 units nightly = 250-375mcg."},
+    {id:"p34",name:"CJC-1295 + Ipamorelin 10mg",desc:"Combined GHRH/ghrelin stack for clean, pulsatile GH stimulation with minimal side effects.",recon:"Add 2mls of sterile water ONLY.",dose:"Take 10-15 units nightly = 250-375mcg of each compound."},
+    {id:"p35",name:"Ipamorelin 10mg",desc:"Selective GH secretagogue with minimal side effects; promotes lean muscle and recovery.",recon:"Add 3mls of bacteriostatic or sterile water.",dose:"Take 7.5-10 units nightly = 250-333mcg."},
+    {id:"p36",name:"Tesamorelin 5mg",desc:"GHRH analog that reduces visceral fat and stimulates natural GH production.",recon:"Add 1ml of sterile water ONLY.",dose:"Take 10 units nightly = 500mcg."},
+    {id:"p37",name:"GHRP-6 5mg",desc:"Growth hormone releasing peptide that stimulates appetite and GH secretion.",recon:"Add 2mls of bacteriostatic or sterile water.",dose:"Take 10-15 units daily = 250-375mcg."},
+    {id:"p38",name:"HGH Somatropin 100 IU Kit",desc:"Synthetic human growth hormone for muscle growth, fat loss, and accelerated recovery.",recon:"Contact TDS for reconstitution protocol.",dose:"Contact TDS for dosing guidance."},
+    {id:"p39",name:"VICER-ACE 12mg Tesamorelin + 6mg Ipamorelin",desc:"Synergistic GH optimization blend for body composition and anti-aging effects.",recon:"Add 3mls of sterile water. Does NOT work well with BAC water.",dose:"Take 8-10 units daily = 335-400mcg Tesamorelin and 165-200mcg Ipamorelin."},
+    {id:"p40",name:"Epithalon",desc:"Telomere-lengthening peptide associated with longevity, anti-aging, and sleep regulation.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units nightly = 250-333mcg."},
+  ]},
+  {id:"s6",title:"COGNITION · MOOD · SLEEP · LIBIDO",peptides:[
+    {id:"p41",name:"Semax 10mg",desc:"Nootropic peptide that boosts BDNF, sharpens focus, and builds stress resilience.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5 units daily = 250mcg."},
+    {id:"p42",name:"Selank 5mg",desc:"Anxiolytic peptide that reduces anxiety and improves memory recall without sedation.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 10 units daily = 250mcg."},
+    {id:"p43",name:"Selank 10mg",desc:"Anxiolytic peptide that reduces anxiety and improves memory recall without sedation.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5 units daily = 250mcg."},
+    {id:"p44",name:"COG-TAIL 20mg (Semax + Selank)",desc:"Combined cognitive and mood-balancing stack for focus and calm.",recon:"Add 3mls of bacteriostatic or sterile water.",dose:"Take 7.5 units daily = 250mcg of Semax and Selank."},
+    {id:"p45",name:"Pinealon 10mg",desc:"Pineal gland peptide supporting sleep regulation, neuroprotection, and longevity.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg."},
+    {id:"p46",name:"Dihexa 10mg",desc:"Highly potent nootropic promoting synaptogenesis and cognitive repair.",recon:"Add 3ml of sterile water.",dose:"Take 10 units daily = 333mcg."},
+    {id:"p47",name:"Cerebrolysin 60mg",desc:"Neuropeptide complex supporting nerve growth and cognitive function.",recon:"Add 5ml of bacteriostatic or sterile water.",dose:"Take 8-40 units daily = 1mg-5mg daily."},
+    {id:"p48",name:"DSIP 5mg",desc:"Delta Sleep-Inducing Peptide that promotes deep, restorative sleep and reduces stress.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 6-10 units nightly = 150-250mcg."},
+    {id:"p49",name:"DSIP 10mg",desc:"Delta Sleep-Inducing Peptide that promotes deep, restorative sleep and reduces stress.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 4.5-7.5 units nightly = 150-250mcg."},
+    {id:"p50",name:"Kisspeptin 10mg",desc:"Regulates reproductive hormones; supports libido and testosterone level maintenance.",recon:"Add 3ml of sterile water. Does NOT work well with BAC water.",dose:"Take 5-7.5 units before bed = 175-250mcg."},
+    {id:"p51",name:"PT-141 10mg",desc:"Melanocortin receptor agonist that directly stimulates sexual arousal in both sexes.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 3-5 units nightly = 175-250mcg."},
+    {id:"p52",name:"Melanotan-2 10mg",desc:"Stimulates melanin production for tanning; also carries libido-enhancing properties.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 3-5 units daily = 175-250mcg."},
+  ]},
+  {id:"s7",title:"IMMUNE FUNCTION & ANTI-MICROBIAL",peptides:[
+    {id:"p53",name:"Thymosin A-1 5mg",desc:"Immune modulator that enhances T-cell activity and antiviral immune response.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 10 units daily = 250mcg."},
+    {id:"p54",name:"Thymalin 10mg",desc:"Thymus-derived peptide supporting immune regulation and longevity pathways.",recon:"Add 3ml of bacteriostatic or sterile water.",dose:"Take 7.5-10 units daily = 250-333mcg."},
+    {id:"p55",name:"LL-37 5mg",desc:"Antimicrobial peptide with broad-spectrum antibacterial properties and immune-signaling effects.",recon:"Add 2ml of bacteriostatic or sterile water.",dose:"Take 10 units daily = 250mcg."},
+  ]},
+  {id:"s8",title:"RESEARCH SUPPLIES",peptides:[
+    {id:"p56",name:"BAC Water 10ml",desc:"Bacteriostatic water used to safely reconstitute lyophilized peptides for research use.",recon:"Ready to use — no preparation required.",dose:"Use as directed per peptide reconstitution protocol above."},
+    {id:"p57",name:"Sterile Water 3ml",desc:"Single-use sterile water for peptide reconstitution and research applications.",recon:"Ready to use — no preparation required.",dose:"Use as directed per peptide reconstitution protocol above. Single-use only."},
+    {id:"p58",name:"Sterile Water 10ml",desc:"Sterile water for peptide reconstitution and research applications.",recon:"Ready to use — no preparation required.",dose:"Use as directed per peptide reconstitution protocol above."},
+  ]},
+];
+
+// ── State ────────────────────────────────────────────────────────────────────
+let sections = [];
+let seeded = false;
+
+function sortSections(arr) {
+  return arr.sort((a, b) => {
+    const ai = DEFAULT_SECTIONS.findIndex(d => d.id === a.id);
+    const bi = DEFAULT_SECTIONS.findIndex(d => d.id === b.id);
+    return (ai === -1 ? 999 : ai) - (bi === -1 ? 999 : bi);
+  });
+}
+
+function parseSections(data) {
+  return sortSections(Object.values(data).map(s => ({
+    ...s,
+    peptides: s.peptides ? Object.values(s.peptides) : []
+  })));
+}
+
+function seedDatabase() {
+  const seedData = {};
+  DEFAULT_SECTIONS.forEach(s => {
+    const peptideMap = {};
+    s.peptides.forEach(p => { peptideMap[p.id] = p; });
+    seedData[s.id] = { id: s.id, title: s.title, peptides: peptideMap };
+  });
+  return db.ref('sections').set(seedData);
+}
+
+// ── Single real-time listener ─────────────────────────────────────────────────
+db.ref('sections').on('value', snapshot => {
+  if (!snapshot.exists()) {
+    // Database empty — seed it
+    if (!seeded) {
+      seeded = true;
+      sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+      render();
+      seedDatabase().catch(e => console.error('Seed error:', e));
+    }
+    return;
+  }
+  sections = parseSections(snapshot.val());
+  render();
+}, error => {
+  console.error('Firebase error:', error);
+  // Fallback to default data if Firebase fails
+  sections = JSON.parse(JSON.stringify(DEFAULT_SECTIONS));
+  render();
+});
+
+// ── Render ───────────────────────────────────────────────────────────────────
+function jumpTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const hdr = document.getElementById('hdr');
+  const offset = (hdr ? hdr.offsetHeight : 90) + 20;
+  window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - offset, behavior: 'smooth' });
+}
+
+function render() {
+  renderNav();
+  renderAdminBar();
+  renderContent();
+  document.body.classList.toggle('admin-mode', isAdmin);
+  const q = document.getElementById('search-input')?.value || '';
+  if (q) handleSearch(q);
+}
+
+function renderNav() {
+  document.getElementById('nav-bar').innerHTML = sections.map(s =>
+    `<button class="nav-btn" onclick="jumpTo('sec-${s.id}')">${s.title}</button>`
+  ).join('');
+}
+
+function renderAdminBar() {
+  document.getElementById('admin-bar').innerHTML = isAdmin
+    ? `<div class="admin-badge">ADMIN ON</div>
+       <button class="btn-add" onclick="openAddModal()">+ ADD PEPTIDE</button>
+       <button class="btn-signout" onclick="signOut()">SIGN OUT</button>`
+    : `<button class="btn-admin" onclick="openPassModal()">ADMIN</button>`;
+}
+
+function renderContent() {
+  document.getElementById('content').innerHTML =
+    sections.map(s => `
+      <div class="section" id="sec-${s.id}">
+        <div class="section-hdr">
+          <div class="section-bar"></div>
+          <div style="flex:1">
+            <div class="section-title">${s.title}</div>
+            <div class="section-line"></div>
+          </div>
+        </div>
+        <div class="cards-grid">
+          ${s.peptides.map(p => `
+            <div class="card">
+              <button class="delete-btn" onclick="deleteCard('${s.id}','${p.id}')">✕ DELETE</button>
+              <div class="card-name">${p.name}</div>
+              <div class="card-desc">${p.desc}</div>
+              <div class="card-divider">
+                <div class="card-label">RECONSTITUTION</div>
+                <div class="card-recon">${p.recon}</div>
+              </div>
+              <div class="card-dose-wrap">
+                <div class="card-label">DOSING</div>
+                <div class="card-dose">${p.dose}</div>
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>`).join('') +
+    `<div class="footer">FOR RESEARCH PURPOSES ONLY · NOT FOR HUMAN CONSUMPTION · DM FOR AVAILABILITY</div>`;
+}
+
+// ── Search ───────────────────────────────────────────────────────────────────
+function handleSearch(query) {
+  const q = query.trim().toLowerCase();
+  const allSections = document.querySelectorAll('.section');
+  let total = 0;
+  allSections.forEach(sec => {
+    const cards = sec.querySelectorAll('.card');
+    let vis = 0;
+    cards.forEach(card => {
+      const match = !q || card.innerText.toLowerCase().includes(q);
+      card.style.display = match ? '' : 'none';
+      if (match) vis++;
+    });
+    sec.style.display = vis === 0 && q ? 'none' : '';
+    total += vis;
+  });
+  let noRes = document.getElementById('no-results');
+  if (!noRes) {
+    noRes = document.createElement('div');
+    noRes.id = 'no-results';
+    noRes.style.cssText = 'text-align:center;color:#555;font-size:14px;padding:60px 20px;letter-spacing:1px;';
+    noRes.textContent = 'No peptides found.';
+    document.getElementById('content').appendChild(noRes);
+  }
+  noRes.style.display = (total === 0 && q) ? 'block' : 'none';
+}
+
+// ── Password ─────────────────────────────────────────────────────────────────
+function openPassModal() {
+  document.getElementById('pass-input').value = '';
+  document.getElementById('pass-error').style.display = 'none';
+  document.getElementById('pass-input').classList.remove('pass-input-error');
+  document.getElementById('pass-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('pass-input').focus(), 100);
+}
+function closePassModal() { document.getElementById('pass-modal').style.display = 'none'; }
+function clearPassError() {
+  document.getElementById('pass-error').style.display = 'none';
+  document.getElementById('pass-input').classList.remove('pass-input-error');
+}
+function submitPass() {
+  if (document.getElementById('pass-input').value === PASS) {
+    isAdmin = true; closePassModal(); render();
+  } else {
+    document.getElementById('pass-error').style.display = 'block';
+    document.getElementById('pass-input').classList.add('pass-input-error');
+  }
+}
+function signOut() { isAdmin = false; render(); }
+
+// ── Add peptide ───────────────────────────────────────────────────────────────
+function openAddModal() {
+  document.getElementById('af-sec').innerHTML = sections.map(s =>
+    `<option value="${s.id}">${s.title}</option>`).join('');
+  ['af-name','af-desc','af-recon','af-dose'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('add-modal').style.display = 'flex';
+  setTimeout(() => document.getElementById('af-name').focus(), 100);
+}
+function closeAddModal() { document.getElementById('add-modal').style.display = 'none'; }
+function submitAdd() {
+  const sid   = document.getElementById('af-sec').value;
+  const name  = document.getElementById('af-name').value.trim();
+  const desc  = document.getElementById('af-desc').value.trim();
+  const recon = document.getElementById('af-recon').value.trim();
+  const dose  = document.getElementById('af-dose').value.trim();
+  if (!name) { alert('Please enter a peptide name.'); return; }
+  const newId = 'p-' + Date.now();
+  // Write directly to Firebase
+  db.ref(`sections/${sid}/peptides/${newId}`).set({ id: newId, name, desc, recon, dose })
+    .then(() => { closeAddModal(); })
+    .catch(err => alert('Error saving: ' + err.message));
+}
+
+// ── Delete peptide ────────────────────────────────────────────────────────────
+function deleteCard(sid, pid) {
+  if (!confirm('Delete this peptide?')) return;
+  db.ref(`sections/${sid}/peptides/${pid}`).remove()
+    .catch(err => alert('Error deleting: ' + err.message));
+}
+</script>
+</body>
+</html>
